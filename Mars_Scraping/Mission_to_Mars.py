@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # Import Splinter and BeautifulSoup
 from splinter import Browser
 from bs4 import BeautifulSoup as soup
@@ -20,6 +17,7 @@ browser.is_element_present_by_css('div.list_text', wait_time=1)
 # Parse the HTML
 html = browser.html
 news_soup = soup(html, 'html.parser')
+
 slide_elem = news_soup.select_one('div.list_text')
 
 # Scrape the title
@@ -33,7 +31,7 @@ news_title
 news_p = slide_elem.find('div', class_='article_teaser_body').get_text()
 news_p
 
-# ### Featured Images
+## JPL Space Images Featured Images
 
 # Set up Splinter
 executable_path = {'executable_path': ChromeDriverManager().install()}
@@ -52,7 +50,7 @@ html = browser.html
 img_soup = soup(html, 'html.parser')
 
 # Find the relative image url
-img_url_rel = img_soup.find('a', class_='fancybox-thumbs').get('href')
+img_url_rel = img_soup.find('img', class_='fancybox-image').get('src')
 img_url_rel
 
 # Use the base URL to create an absolute URL
@@ -61,8 +59,8 @@ img_url
 
 # Scrap Mars Data: Mars Facts
 df = pd.read_html('https://galaxyfacts-mars.com')[0]
-df.columns=['description', 'Mars', 'Earth']
-df.set_index('description', inplace=True)
+df.columns=['Description', 'Mars', 'Earth']
+df.set_index('Description', inplace=True)
 df
 
 df.to_html()
